@@ -1,0 +1,41 @@
+fmax<-function (x,mu1,mu2,sigma1,sigma2,rho)
+{t1<-dnorm(x,mean= mu1,sd=sigma1)
+tt<-rho*(mu1-x)/(sigma1*sqrt(1-rho*rho))
+tt<-tt-(mu2-x)/(sigma2*sqrt(1-rho*rho))
+t1<-t1*pnrom(tt)
+t2<-dnorm(x,mean= mu2,sd=sigma2)
+tt<-rho*(mu2-x)/(sigma2*sqrt(1-rho*rho))
+tt<-tt-(mu1-x)/(sigma1*sqrt(1-rho*rho))
+t2<-t2*pnrom(tt)
+return(t1+t2)}
+
+
+
+
+
+
+
+fmin<-function (y,mu1,mu2,sigma1,sigma2,rho)
+{t1<-dnorm(y,mean=mu1,sd=sigma1)
+tt<-rho*(y-mu1)/(sigma1*sqrt(1-rho*rho))
+tt<-tt-(y-mu2)/(sigma2*sqrt(1-rho*rho))
+t1<-t1*pnrom(tt)
+t2<-dnorm(y,mean=mu2,sd=sigma2)
+tt<-rho*(y-mu2)/(sigma2*sqrt(1-rho*rho))
+tt<-tt-(y-mu1)/(sigma1*sqrt(1-rho*rho))
+t2<-t2*pnrom(tt)
+return(t1+t2)}
+
+
+=======================================
+
+Modification pour matlab: 
+
+r    matlab
+<-     =
+
+function semble fonctionner de la même manière avec les inputs de droite. 
+
+dnorm : x nombre dont on veut la probabilité, le reste spécifie les qualités de la distribution
+
+pnrom = cumulative probability function

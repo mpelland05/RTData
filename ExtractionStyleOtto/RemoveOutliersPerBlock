@@ -1,0 +1,37 @@
+function NoOutliers = RemoveOutliers(nParticipants,nBlocks,Separated,Event2Num,MinRT,MaxRT,NumSTD),
+%Note, this scripts carries the rejection in the 1/TR.
+
+NoOutliers = Separated;
+
+for ii = 1:length(Separated.Participants),
+    for jj = 1:length(Separated.Participants{ii}.Blocks),
+        for kk = 1:length(Event2Num.Event),
+        
+            Temp = Separated.Participants{ii}.Blocks{jj}.TrialTypeResults{kk}.ReactionTime;
+            
+            Zer = find(Temp < MinRT | Temp > MaxRT); %Find values under Min RT and Max RT
+            
+            if ~isempty(Zer), % Set values under MinRT and MaxRT to 0.
+                Temp(Zer) = 0;
+                clear Zer;
+            end
+            
+            noZer = find(Temp > 0);     %Find the 1/RT of all RTs
+            Temp(noZer) = 1./Temp(noZer);
+            
+            Average = mean(Temp(noZer)); %Calculate Outliers
+            StandDev = std(Temp(noZer));
+            
+            Zer = find(Temp < (Average - (3*StandDev)) | Temp > (Average + (3*StandDev)) ); %Remove Outliers
+            if ~isempty(Zer), % Set values under MinRT and MaxRT to 0.
+                Temp(Zer) = 0;
+                clear Zer;
+            end
+            
+            NoOutliers.Participants{ii}.Blocks{jj}.TrialTypeResults{kk}.ReactionTime = Temp;
+        
+            clear Temp;clear Zer; clear noZer;
+        end
+    end
+end
+end
